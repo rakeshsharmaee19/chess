@@ -164,7 +164,7 @@ class Tournament:
                 elif choice == "7":
 
                     # Updating match result
-                    tournament_id = input("Enter tournament ID to Create Fixture : ")
+                    tournament_id = input("Enter tournament ID to Update Match: ")
                     print(self.controller.tournament_fixture(tournament_id))
                     match_id = input("Enter the Match ID : ")
                     winner = input("Enter the winner ID or Draw for Tie Match : ")
@@ -173,7 +173,7 @@ class Tournament:
                 elif choice == "8":
 
                     # Getting tournament score
-                    tournament_id = input("Enter tournament ID to Create Fixture : ")
+                    tournament_id = input("Enter tournament ID to Get Score: ")
                     print(self.controller.get_tournament_score(tournament_id))
                 return False
             else:
