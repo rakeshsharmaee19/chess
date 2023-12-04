@@ -9,7 +9,19 @@ class Player_controller:
 
     def save_player(self, player_id, first_name, last_name, player_dob):
         """
-            Method to save player data into JSON
+            Method to save player data into a JSON file.
+
+            This method retrieves existing player data from the model, creates a new
+            data entry for the specified player, and saves the updated data back to
+            the JSON file. It performs checks to ensure the uniqueness of player IDs
+            and prints a message indicating the success of the operation.
+
+            :param player_id: The national chess ID of the player.
+            :param first_name: The first name of the player.
+            :param last_name: The last name of the player.
+            :param player_dob: The date of birth of the player.
+
+            :return: False after completing the save operation.
         """
         # Calling player Model to get player data
         player_data = self.model.get_data()
@@ -19,8 +31,10 @@ class Player_controller:
                 "last_name": last_name,
                 "dob": player_dob
             }
+
         # Checking if data existing or not
         if player_data:
+
             # List of Registered Player ID
             chess_key_list = list(player_data.keys())
 
@@ -37,6 +51,7 @@ class Player_controller:
             print("Player Data added successfully")
         else:
             output_data = {player_id: data}
+
             # Calling model module to save player data into empty JSON file
             self.model.save_data(output_data)
             print("Player Data added successfully")
@@ -44,7 +59,14 @@ class Player_controller:
 
     def list_all_player(self):
         """
-            Method to get all player from the model
+            Method to retrieve and format a list of all players from the model.
+
+            This method calls the player model to get the player data and organizes
+            it into a formatted list. If player data exists, it creates a list of player
+            information sorted alphabetically by name. The method returns this formatted
+            list or False if there are no players in the database.
+
+            :return: A formatted list of player data sorted by name, or False if no players exist.
         """
         # Calling player Model to get player data
         player_data = self.model.get_data()
@@ -75,7 +97,17 @@ class Player_controller:
 
     def get_player_profile(self, player_id):
         """
-            Method to get all player from the model
+            Method to retrieve the profile of a specific player based on their ID.
+
+            This method calls the player model to get the player data and checks if
+            the player with the specified ID exists. If the player exists, the method
+            adds the player ID to the data and returns the player's profile. If the
+            player ID is not valid or the player data does not exist, the method
+            prints an appropriate message and returns False.
+
+            :param player_id: The national chess ID of the player.
+            :return: The player's profile data including the player ID, or False if
+                     the player ID is not valid or the player data does not exist.
         """
         # Calling player Model to get player data
         player_data = self.model.get_data()
@@ -83,6 +115,8 @@ class Player_controller:
         # Checking is player data exist or not
         if player_data:
             if player_id in list(player_data.keys()):
+
+                # Adding player ID to the data
                 player_data[player_id]["id"] = player_id
                 return player_data[player_id]
             else:
