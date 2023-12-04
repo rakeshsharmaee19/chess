@@ -921,3 +921,19 @@ class Tournament_controller:
         else:
             print("Tournament Data dose not exist")
         return False
+
+    def tournament_details_date(self, tournament_id):
+
+        # Calling Tournament Model to get Tournament data
+        tournament_data = self.model.get_data()
+
+        # Checking if tournament data exist or not
+        if tournament_data:
+            if tournament_id in list(tournament_data.keys()):
+                return "{} from {} to {}".format(tournament_data[tournament_id]["name"], tournament_data[tournament_id]["start_date"], tournament_data[tournament_id]["end_date"])
+                return tournament_data[tournament_id]
+            else:
+                print("Tournament ID is incorrect, Please enter correct ID")
+                return False
+        else:
+            print("Tournament Data dose not exist.")

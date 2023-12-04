@@ -111,13 +111,14 @@ class Tournament:
             print("6. Create Fixture for current round.")
             print("7. Update Match Result.")
             print("8. Get Score")
+            print("9. View Tournament with Date")
             print("0. Exit.")
 
             # Getting user input for menu choice
             choice = input("Please Enter your choice : ")
 
             # Validating user input
-            if choice in ["1", "2", "3", "4", "5", "6", "7", "8", "0"]:
+            if choice in ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"]:
                 if choice == "1":
 
                     # Listing all tournaments
@@ -175,6 +176,12 @@ class Tournament:
                     # Getting tournament score
                     tournament_id = input("Enter tournament ID to Get Score: ")
                     print(self.controller.get_tournament_score(tournament_id))
+
+                elif choice == "9":
+
+                    # getting tournament details with date
+                    tournament_id = input("Enter the tournament ID : ")
+                    print(self.controller.tournament_details_date(tournament_id))
                 return False
             else:
                 print("Invalid choice. Please try again.")
