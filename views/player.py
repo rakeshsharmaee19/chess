@@ -2,6 +2,29 @@ from controllers.player import Player_controller
 
 
 def validate_id(chess_id):
+    """
+        Validate a chess ID based on specific criteria.
+
+        Args:
+            chess_id (str): The chess ID to be validated.
+
+        Returns:
+            bool: True if the chess ID is valid, False otherwise.
+
+        This function validates a chess ID based on the following criteria:
+        1. The ID must be exactly 7 characters long.
+        2. The first two characters must be alphabetic.
+        3. The remaining characters (from index 2 onward) must be numeric.
+
+        Returns True if all criteria are met; otherwise, it returns False.
+
+        Example:
+        validate_id("AB12345")
+        False
+        validate_id("AB123456")
+        True
+    """
+
     # Check if the length of the chess ID is exactly 7 characters
     if len(chess_id) != 7:
         return False

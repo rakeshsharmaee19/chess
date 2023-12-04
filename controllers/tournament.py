@@ -923,6 +923,28 @@ class Tournament_controller:
         return False
 
     def tournament_details_date(self, tournament_id):
+        """
+           Retrieve tournament details including start and end date based on tournament ID.
+
+           Args:
+               tournament_id (str): The ID of the tournament.
+
+           Returns:
+               str or dict: A formatted string with tournament details or False if the tournament ID is incorrect.
+
+           This method fetches data about tournaments from the Tournament Model, checks if the provided tournament ID
+           exists in the available data, and then returns a formatted string with the tournament name, start date, and end date.
+           If the tournament ID is incorrect or the data does not exist, it returns False and prints an appropriate message.
+
+           Note:
+           - The return type can be either a formatted string or the complete tournament data based on preference.
+
+           Example:
+           tournament_id = "123"
+           details = tournament_details_date(tournament_id)
+           print(details)
+           "TournamentName from 2023-01-01 to 2023-12-31"
+       """
 
         # Calling Tournament Model to get Tournament data
         tournament_data = self.model.get_data()
@@ -930,10 +952,16 @@ class Tournament_controller:
         # Checking if tournament data exist or not
         if tournament_data:
             if tournament_id in list(tournament_data.keys()):
-                return "{} from {} to {}".format(tournament_data[tournament_id]["name"], tournament_data[tournament_id]["start_date"], tournament_data[tournament_id]["end_date"])
-                return tournament_data[tournament_id]
+
+                # Formatting and returning tournament details
+                return "{} from {} to {}".format(tournament_data[tournament_id]["name"],
+                                                 tournament_data[tournament_id]["start_date"],
+                                                 tournament_data[tournament_id]["end_date"])
+
             else:
+                # Displaying an error message for incorrect tournament ID
                 print("Tournament ID is incorrect, Please enter correct ID")
                 return False
         else:
+            # Displaying a message if tournament data does not exist
             print("Tournament Data dose not exist.")
