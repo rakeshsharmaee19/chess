@@ -34,10 +34,12 @@ class Player_controller:
 
             # Calling model module to save player data
             self.model.save_data(player_data)
+            print("Player Data added successfully")
         else:
             output_data = {player_id: data}
             # Calling model module to save player data into empty JSON file
             self.model.save_data(output_data)
+            print("Player Data added successfully")
         return False
 
     def list_all_player(self):
