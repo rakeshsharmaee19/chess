@@ -79,10 +79,13 @@ class Player_controller:
         player_data = self.model.get_data()
 
         # Checking is player data exist or not
-        if player_id in list(player_data.keys()):
-            player_data[player_id]["id"] = player_id
-            return player_data[player_id]
+        if player_data:
+            if player_id in list(player_data.keys()):
+                player_data[player_id]["id"] = player_id
+                return player_data[player_id]
+            else:
+                print("Player ID is not valid.")
+                return False
         else:
-            print("Player ID is not valid.")
+            print("Player Dose nat exist")
             return False
-
