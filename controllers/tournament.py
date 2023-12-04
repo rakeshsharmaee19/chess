@@ -232,11 +232,17 @@ class Tournament_controller:
         if player_data:
             if player_id in list(player_data.keys()) and tournament_id in list(tournament_data.keys()):
 
-                tournament_data[tournament_id]["players"].append(player_id)
+                # Checking if player is added to tournament or not
+                if not player_id in tournament_data[tournament_id]["players"]:
+                    tournament_data[tournament_id]["players"].append(player_id)
 
-                # Saving Data into Tournament Model
-                self.model.save_data(tournament_data)
-                print("Player Details Added Successfully.")
+                    # Saving Data into Tournament Model
+                    self.model.save_data(tournament_data)
+                    print("Player Details Added Successfully.")
+                else:
+                    print("Player is already Added to tournament")
+
+
             else:
                 print("Player ID is not valid or Tournament ID is not correct")
         else:
