@@ -379,7 +379,6 @@ class Tournament_controller:
 
         # Calling Score Model to get Score data
         score_data = self.score.get_data()
-        print(score_data)
 
         # Using Lambda function to sort player on their score
         score_data_sorted = sorted(list(score_data[tournament_id]["final"].items()), reverse=True)
@@ -456,8 +455,6 @@ class Tournament_controller:
                     print("Fixture is already created for this round.")
                     return False
             else:
-                import pdb
-                pdb.set_trace()
                 score_data[tournament_id] = {match_round:{}, "final":{}}
                 # iterating for player data to generate a new score model
                 for i in player_data:
@@ -847,7 +844,6 @@ class Tournament_controller:
 
             # Checking if tournament_id and match_round exist or not
             if tournament_id in list(score_data.keys()):
-                print(current_round)
                 if current_round in list(score_data[tournament_id].keys()):
                     return_data = [{"current_round": score_data[tournament_id][current_round]},
                                    {"final_score": score_data[tournament_id]["final"]}]
