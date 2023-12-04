@@ -184,11 +184,14 @@ class Tournament_controller:
         tournament_data = self.model.get_data()
 
         # Checking if tournament data exist or not
-        if tournament_id in list(tournament_data.keys()):
-            return tournament_data[tournament_id]
+        if tournament_data:
+            if tournament_id in list(tournament_data.keys()):
+                return tournament_data[tournament_id]
+            else:
+                print("Tournament ID is incorrect, Please enter correct ID")
+                return False
         else:
-            print("Tournament ID is incorrect, Please enter correct ID")
-            return False
+            print("Tournament Data dose not exist.")
 
     def add_player(self, tournament_id, player_id):
         """
@@ -226,15 +229,18 @@ class Tournament_controller:
         player_data = self.player_model.get_data()
 
         # Checking if player_id and tournament_id exist or not
-        if player_id in list(player_data.keys()) and tournament_id in list(tournament_data.keys()):
+        if player_data:
+            if player_id in list(player_data.keys()) and tournament_id in list(tournament_data.keys()):
 
-            tournament_data[tournament_id]["players"].append(player_id)
+                tournament_data[tournament_id]["players"].append(player_id)
 
-            # Saving Data into Tournament Model
-            self.model.save_data(tournament_data)
-            print("Player Details Added Successfully.")
+                # Saving Data into Tournament Model
+                self.model.save_data(tournament_data)
+                print("Player Details Added Successfully.")
+            else:
+                print("Player ID is not valid or Tournament ID is not correct")
         else:
-            print("Player ID is not valid or Tournament ID is not correct")
+            print("Player Data dose not exist.")
         return False
 
     def list_tournament_player(self, tournament_id):
@@ -277,17 +283,20 @@ class Tournament_controller:
         player_output_data = []
 
         # Checking if tournament_id exist or not
-        if tournament_id in list(tournament_data.keys()):
+        if tournament_data:
+            if tournament_id in list(tournament_data.keys()):
 
-            # List of all players in Tournaments
-            players_list = tournament_data[tournament_id]["players"]
+                # List of all players in Tournaments
+                players_list = tournament_data[tournament_id]["players"]
 
-            # Iterating through player_list list
-            for i in players_list:
-                # Saving data of each student id first_name last_name into player_list
-                player_output_data.append(i + "  " + player_data[i]["first_name"] + " " + player_data[i]["first_name"])
+                # Iterating through player_list list
+                for i in players_list:
+                    # Saving data of each student id first_name last_name into player_list
+                    player_output_data.append(i + "  " + player_data[i]["first_name"] + " " + player_data[i]["first_name"])
+            else:
+                print("Tournament ID is not correct")
         else:
-            print("Tournament ID is not correct")
+            print("Tournament Data dose not exist.")
 
         # Returning player Data
         return player_output_data
@@ -326,9 +335,12 @@ class Tournament_controller:
         tournament_data = self.model.get_data()
 
         # Checking if tournament_id exist or not
-        if tournament_id in list(tournament_data.keys()):
-            #  will get current round
-            current_round = tournament_data[tournament_id]["current_round"]
+        if tournament_data:
+            if tournament_id in list(tournament_data.keys()):
+                #  will get current round
+                current_round = tournament_data[tournament_id]["current_round"]
+        else:
+            print("Tournament data dose not exist.")
 
         # calling create_score_model to create score data of each player for each round
         self.create_score_model(tournament_id, current_round, self.list_tournament_player(tournament_id))
@@ -614,9 +626,12 @@ class Tournament_controller:
         tournament_data = self.model.get_data()
 
         # checking if tournament_id exist or not
-        if tournament_id in list(tournament_data.keys()):
-            # Get current tournament round
-            current_round = str(tournament_data[tournament_id]["current_round"])
+        if tournament_data:
+            if tournament_id in list(tournament_data.keys()):
+                # Get current tournament round
+                current_round = str(tournament_data[tournament_id]["current_round"])
+        else:
+            print("Tournament Data dose not exist.")
 
         # Checking if match data exist or not
         if tournament_match_data:
@@ -749,9 +764,12 @@ class Tournament_controller:
         tournament_data = self.model.get_data()
 
         # checking if tournament_id exist or not
-        if tournament_id in list(tournament_data.keys()):
-            # Get current tournament round
-            current_round = str(tournament_data[tournament_id]["current_round"])
+        if tournament_data:
+            if tournament_id in list(tournament_data.keys()):
+                # Get current tournament round
+                current_round = str(tournament_data[tournament_id]["current_round"])
+        else:
+            print("Tournament Data dose not exist.")
 
         # Check if score data exist or not
         if score_data:
@@ -803,9 +821,12 @@ class Tournament_controller:
         tournament_data = self.model.get_data()
 
         # checking if tournament_id exist or not
-        if tournament_id in list(tournament_data.keys()):
-            # Get current tournament round
-            current_round = str(tournament_data[tournament_id]["current_round"])
+        if tournament_data:
+            if tournament_id in list(tournament_data.keys()):
+                # Get current tournament round
+                current_round = str(tournament_data[tournament_id]["current_round"])
+        else:
+            print("Tournament Data dose not exist.")
 
         # Checking if match data exist or not
         if tournament_match_data:
