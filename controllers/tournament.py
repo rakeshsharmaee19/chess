@@ -828,8 +828,17 @@ class Tournament_controller:
         # Calling score Model to get score data
         score_data = self.score.get_data()
 
+        # Calling player model to get Player Info
+        player_data = self.player_model.get_data()
+
         # Calling tournament Model to get tournament data
         tournament_data = self.model.get_data()
+
+        # List for returning data
+        return_data = [
+            {"current_score": {}},
+            {"final_score": {}}
+        ]
 
         # checking if tournament_id exist or not
         if tournament_data:
@@ -844,13 +853,37 @@ class Tournament_controller:
 
             # Checking if tournament_id and match_round exist or not
             if tournament_id in list(score_data.keys()):
+
+                # Checking for if current round is completed
                 if current_round in list(score_data[tournament_id].keys()):
-                    return_data = [{"current_round": score_data[tournament_id][current_round]},
-                                   {"final_score": score_data[tournament_id]["final"]}]
+
+                    # Iterating for each player of current round to get There first name and last name
+                    for player_id in tournament_data[tournament_id]["players"]:
+
+                        # Getting player full name by combining first name and last name
+                        player_name = player_data[player_id]["first_name"]+"  "+player_data[player_id]["last_name"]
+
+                        # Inserting player current round score into the value
+                        return_data[0]["current_score"][player_name] = score_data[tournament_id][current_round][player_id]
+
+                        # Inserting player final score into the value
+                        return_data[1]["final_score"][player_name] = score_data[tournament_id][current_round][player_id]
                     return return_data
+
+                # If current round is completed the will show the last round score
                 elif int(current_round)>1 and str(int(current_round)-1) in list(score_data[tournament_id].keys()):
-                    return_data = [{"current_round": score_data[tournament_id][str(int(current_round)-1)]},
-                                   {"final_score": score_data[tournament_id]["final"]}]
+
+                    # Iterating for each player of current round to get There first name and last name
+                    for player_id in tournament_data[tournament_id]["players"]:
+
+                        # Getting player full name by combining first name and last name
+                        player_name = player_data[player_id]["first_name"] + "  " + player_data[player_id]["last_name"]
+
+                        # Inserting player current round score into the value
+                        return_data[0]["current_score"][player_name] = score_data[tournament_id][current_round][player_id]
+
+                        # Inserting player final score into the value
+                        return_data[1]["final_score"][player_name] = score_data[tournament_id][current_round][player_id]
                     return return_data
             else:
                 print("Tournament Dose not exist.")
