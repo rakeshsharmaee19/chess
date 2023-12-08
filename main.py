@@ -5,13 +5,13 @@ from views.tournament import Tournament
 def main():
 
     while True:
-        print("".center(60,"-"))
+        print("".center(60, "-"))
         print("1. Tournament Menu")
         print("2. Player Menu")
         print("0. Exit")
-
+        print("\n")
         choice = input("Enter your choice: ")
-
+        print("\n")
         if choice == "1":
             view = Tournament()
             view.tournament_menu()
