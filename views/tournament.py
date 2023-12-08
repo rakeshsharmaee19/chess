@@ -201,7 +201,8 @@ class Tournament:
                     # Getting tournament score
                     tournament_id = input("Enter tournament ID to Get Score: ")
 
-                    self.diplaye_score(self.controller.get_tournament_score(tournament_id))
+                    if self.controller.get_tournament_score(tournament_id):
+                        self.display_score(self.controller.get_tournament_score(tournament_id))
 
                 elif choice == "9":
 
@@ -218,7 +219,7 @@ class Tournament:
             if not return_choice():
                 return False
 
-    def diplaye_score(self, data):
+    def display_score(self, data):
         """
             Display scores from the provided data.
 
