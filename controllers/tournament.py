@@ -190,10 +190,12 @@ class Tournament_controller:
             if tournament_id in list(tournament_data.keys()):
                 return tournament_data[tournament_id]
             else:
+                print("".center(60,"-"))
                 print("Tournament ID is incorrect, Please enter correct ID")
-                return False
         else:
+            print("".center(60, "-"))
             print("Tournament Data dose not exist.")
+        return False
 
     def add_player(self, tournament_id, player_id):
         """
@@ -313,7 +315,7 @@ class Tournament_controller:
                 # Iterating through player_list list
                 for i in players_list:
                     # Saving data of each student id first_name last_name into player_list
-                    player_output_data.append(i + "  " + player_data[i]["first_name"] + " " + player_data[i]["first_name"])
+                    player_output_data.append(i + "  " + player_data[i]["first_name"] + " " + player_data[i]["last_name"])
             else:
                 print("Tournament ID is not correct")
         else:
@@ -358,6 +360,10 @@ class Tournament_controller:
         # Checking if tournament_id exist or not
         if tournament_data:
             if tournament_id in list(tournament_data.keys()):
+
+                if not tournament_data[tournament_id]["players"]:
+                    print("Players are not added to tournament, Please add players before creating fixture.")
+                    return
                 #  will get current round
                 if not tournament_data[tournament_id]["status"]:
                     current_round = tournament_data[tournament_id]["current_round"]

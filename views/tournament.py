@@ -9,9 +9,8 @@ def return_choice():
         Method for taking user Input for return option
     """
     print("\n")
-    print("Enter Y or Yes if you want to continue or else for exit to main Menu")
-    print("\n")
-    return_option = input("Please Enter your Choice.")
+    print("Enter Y or Yes if you want to continue or else for exit to main Menu.")
+    return_option = input("Please Enter your Choice : ")
 
     # condition to check user choice
     if return_option.upper() == "Y" or return_option.upper() == "YES":
@@ -46,9 +45,9 @@ class Tournament:
         while True:
             # Displaying the main menu options
             print("Tournament Menu".center(40, "-"))
-            print("1. Create Tournament.")
-            print("2. View Tournament.")
-            print("0. Exit")
+            print("1. Create Tournament : ")
+            print("2. View Tournament : ")
+            print("0. Exit.")
 
             print("\n")
 
@@ -68,7 +67,7 @@ class Tournament:
                     return False
             else:
                 # Displaying an error message for invalid choice
-                print("Invalid choice. Please try again.")
+                print("Invalid choice. Please try again : ")
 
     def create_tournament(self):
         """
@@ -79,37 +78,37 @@ class Tournament:
         print("Please Enter Below Details".center(40, "-"))
 
         # Getting tournament name from user
-        name = input("Enter the Name of Tournament: ")
+        name = input("Enter the Name of Tournament : ")
 
         # Getting tournament location from user
-        location = input("Enter Tournament Location: ")
+        location = input("Enter Tournament Location : ")
 
         # Validating and getting tournament start date from user
         while True:
-            start_date = input("Enter Tournament Start Date in YYYY-MM-DD: ")
+            start_date = input("Enter Tournament Start Date in YYYY-MM-DD : ")
             if validate(start_date):
                 break
 
         # Validating and getting tournament end date from user
         while True:
-            end_date = input("Enter Tournament End Date in YYYY-MM-DD: ")
+            end_date = input("Enter Tournament End Date in YYYY-MM-DD : ")
             if validate(end_date):
                 if datetime.datetime.strptime(start_date, "%Y-%m-%d") > datetime.datetime.strptime(end_date,
                                                                                                    "%Y-%m-%d"):
-                    print("Tournament End Date is Before Start Date")
+                    print("Tournament End Date is Before Start Date!")
                 else:
                     break
 
         # Validating and getting the number of rounds from user
         while True:
-            no_of_rounds = input("Enter Tournament Total Rounds: ")
+            no_of_rounds = input("Enter Tournament Total Rounds : ")
             if no_of_rounds.isnumeric():
                 break
             else:
                 print("Enter in Number : ")
 
         # Getting tournament description from user
-        description = input("Enter Tournament Description: ")
+        description = input("Enter Tournament Description : ")
 
         # Saving tournament data using the controller
         self.controller.save_tournament(name, location, start_date, end_date, description, no_of_rounds)
@@ -126,18 +125,18 @@ class Tournament:
             print("\n")
             print("1. List All Tournaments.")
             print("2. Tournaments Details.")
-            print("3. Add Player in Tournament.")
+            print("3. Add Player in Tournament : ")
             print("4. List All Player in Tournament.")
             print("5. List of all completed round and matches of round.")
-            print("6. Create Fixture for current round.")
-            print("7. Update Match Result.")
-            print("8. Get Score")
-            print("9. View Tournament with Date")
+            print("6. Create Fixture for current round : ")
+            print("7. Update Match Result : ")
+            print("8. Get Score.")
+            print("9. View Tournament with Date.")
             print("0. Exit.")
             print("\n")
             # Getting user input for menu choice
             choice = input("Please Enter your choice : ")
-            print("\n")
+
             # Validating user input
             if choice in ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"]:
                 if choice == "1":
@@ -153,7 +152,8 @@ class Tournament:
 
                     # Getting tournament details based on ID
                     tournament_id = input("Enter the tournament ID : ")
-                    print(self.controller.tournament_details(tournament_id))
+                    if self.controller.tournament_details(tournament_id):
+                        self.display_tournament(self.controller.tournament_details(tournament_id))
 
                 elif choice == "3":
 
@@ -162,6 +162,7 @@ class Tournament:
                     self.player_view.list_all_player()
                     player_id = input("Enter player ID from above to add in tournament : ")
                     self.controller.add_player(tournament_id, player_id)
+                    print()
 
                 elif choice == "4":
 
@@ -190,7 +191,7 @@ class Tournament:
                 elif choice == "7":
 
                     # Updating match result
-                    tournament_id = input("Enter tournament ID to Update Match: ")
+                    tournament_id = input("Enter tournament ID to Update Match : ")
                     self.display_result(self.controller.tournament_fixture(tournament_id))
                     match_id = input("Enter the Match ID : ")
                     winner = input("Enter the winner ID or Draw for Tie Match : ")
@@ -199,7 +200,7 @@ class Tournament:
                 elif choice == "8":
 
                     # Getting tournament score
-                    tournament_id = input("Enter tournament ID to Get Score: ")
+                    tournament_id = input("Enter tournament ID to Get Score : ")
 
                     if self.controller.get_tournament_score(tournament_id):
                         self.display_score(self.controller.get_tournament_score(tournament_id))
@@ -214,7 +215,7 @@ class Tournament:
                     return False
 
             else:
-                print("Invalid choice. Please try again.")
+                print("Invalid choice. Please try again!")
 
             if not return_choice():
                 return False
@@ -290,28 +291,38 @@ class Tournament:
         """
 
         # Iterate over each row in the data
-        for match_row in data:
+        if data:
+            for match_row in data:
 
-            # Print a separator line for better readability
-            print("".center(60,"-"))
+                # Print a separator line for better readability
+                print("".center(60, "-"))
 
-            # Display information about the tournament round
-            print("Tournament Current Round ==> {}".format(match_row["tournament_round"]))
-            print("current round completed ==> {}".format(match_row["completed"]))
+                # Display information about the tournament round
+                print("Tournament Current Round ==> {}".format(match_row["tournament_round"]))
+                print("current round completed ==> {}".format(match_row["completed"]))
 
-            # Iterate over each match in the current round
-            for match_number in list(match_row.keys()):
+                # Iterate over each match in the current round
+                for match_number in list(match_row.keys()):
 
-                # Check if the match_number is numeric (to filter out non-match keys)
-                if match_number.isnumeric():
+                    # Check if the match_number is numeric (to filter out non-match keys)
+                    if match_number.isnumeric():
+                        # Print a separator line for each match
+                        print("".center(30, "-"))
 
-                    # Print a separator line for each match
-                    print("".center(30, "-"))
+                        # Display information about the match
+                        print("Match ID ==> {}".format(match_number))
+                        print("Player1 ==> {}".format(match_row[match_number]["player1"]))
+                        print("Player2 ==> {}".format(match_row[match_number]["player2"]))
+                        print("Completed ==> {}".format(match_row[match_number]["completed"]))
+                        print("Winner ==> {}".format(match_row[match_number]["winner"]))
+                        print("result ==> {}".format(match_row[match_number]["result"]))
+        else:
+            print("Tournament dose not Exist")
 
-                    # Display information about the match
-                    print("Match ID ==> {}".format(match_number))
-                    print("Player1 ==> {}".format(match_row[match_number]["player1"]))
-                    print("Player2 ==> {}".format(match_row[match_number]["player2"]))
-                    print("Completed ==> {}".format(match_row[match_number]["completed"]))
-                    print("Winner ==> {}".format(match_row[match_number]["winner"]))
-                    print("result ==> {}".format(match_row[match_number]["result"]))
+    def display_tournament(self, data):
+        """
+            Method to display Tournament display.
+        """
+        print("".center(60, "-"))
+        for key_name in data:
+            print("{} ==> {}".format(key_name, data[key_name]))
