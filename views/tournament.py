@@ -179,7 +179,7 @@ class Tournament:
                 elif choice == "5":
 
                     # Getting fixture details for a tournament
-                    tournament_id = input("Enter tournament ID to get Fixture Details : ")
+                    tournament_id = input("Enter tournament ID to get Tournament Match Details : ")
                     display_result(self.controller.tournament_fixture(tournament_id))
 
                 elif choice == "6":
