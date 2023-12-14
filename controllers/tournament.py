@@ -883,7 +883,7 @@ class Tournament_controller:
 
                         # Inserting player final score into the value
                         return_data[1]["final_score"][player_name] = score_data[tournament_id]["final"][player_id]
-                    return return_data
+                    return [return_data, tournament_data[tournament_id]["completed"]]
 
                 # If current round is completed then it will show the last round score
                 elif int(current_round) > 1 and str(int(current_round) - 1) in list(score_data[tournament_id].keys()):
@@ -901,7 +901,7 @@ class Tournament_controller:
                         # Inserting player final score into the value
                         return_data[1]["final_score"][player_name] = score_data[tournament_id][current_round][
                             player_id]
-                    return return_data
+                    return [return_data, tournament_data[tournament_id]["completed"]]
             else:
                 print("Tournament Match Schedule is not created.")
         else:

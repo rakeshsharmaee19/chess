@@ -205,7 +205,11 @@ class Tournament:
                     tournament_id = input("Enter tournament ID to Get Score : ")
 
                     if self.controller.get_tournament_score(tournament_id):
-                        display_score(self.controller.get_tournament_score(tournament_id))
+                        if self.controller.get_tournament_score(tournament_id)[1]:
+                            print("Tournament is Completed.")
+                        else:
+                            print("Ongoing Tournament.")
+                        display_score(self.controller.get_tournament_score(tournament_id)[0])
 
                 elif choice == "9":
 
