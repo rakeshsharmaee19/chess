@@ -229,7 +229,7 @@ class Tournament_controller:
         if tournament_data:
             if tournament_id in list(tournament_data.keys()):
                 #  will get current round
-                if tournament_data[tournament_id]["status"]:
+                if tournament_data[tournament_id]["completed"]:
                     print("Tournament is already completed")
                     return
                 elif tournament_data[tournament_id]["started"]:
