@@ -115,9 +115,6 @@ class Tournament_controller:
             This method fetches tournament data from the model and constructs a list
             containing information about each tournament, including its unique ID and name.
 
-            Args:
-                None
-
             Returns:
                 list: A list of lists, where each inner list contains the ID and name of a tournament.
 
@@ -873,7 +870,7 @@ class Tournament_controller:
                         return_data[0]["current_score"][player_name] = score_data[tournament_id][current_round][player_id]
 
                         # Inserting player final score into the value
-                        return_data[1]["final_score"][player_name] = score_data[tournament_id][current_round][player_id]
+                        return_data[1]["final_score"][player_name] = score_data[tournament_id]["final"][player_id]
                     return return_data
 
                 # If current round is completed the will show the last round score
@@ -957,6 +954,7 @@ class Tournament_controller:
                     tournament_data[tournament_id]["status"] = True
 
             self.model.save_data(tournament_data)
+            self.match.save_data(tournament_match_data)
         else:
             print("Tournament Data dose not exist")
         return False

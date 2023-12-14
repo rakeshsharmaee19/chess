@@ -128,7 +128,7 @@ class Tournament:
             print("3. Add Player in Tournament : ")
             print("4. List All Player in Tournament.")
             print("5. List of all completed round and matches of round.")
-            print("6. Create Fixture for current round : ")
+            print("6. Create Match Schedule for current round : ")
             print("7. Update Match Result : ")
             print("8. Get Score.")
             print("9. View Tournament with Date.")
@@ -185,8 +185,9 @@ class Tournament:
                 elif choice == "6":
 
                     # Creating fixture for the current round
-                    tournament_id = input("Enter tournament ID to Create Fixture : ")
+                    tournament_id = input("Enter tournament ID to Create match schedule : ")
                     self.controller.create_fixture(tournament_id)
+                    print("Match schedule is created for current round")
 
                 elif choice == "7":
 
