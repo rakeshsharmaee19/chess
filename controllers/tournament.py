@@ -970,6 +970,7 @@ class Tournament_controller:
                     tournament_data[tournament_id]["current_round"] += 1
                 elif int(current_round) == int(tournament_data[tournament_id]["number_of_rounds"]):
                     tournament_data[tournament_id]["completed"] = True
+                    tournament_match_data[tournament_id][current_round]["completed"] = True
 
             self.model.save_data(tournament_data)
             self.match.save_data(tournament_match_data)
