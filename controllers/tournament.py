@@ -76,7 +76,7 @@ class Tournament_controller:
                 "number_of_rounds": no_of_round,
                 "current_round": current_round,
                 "description": description,
-                "status": False,
+                "completed": False,
                 "players": [],
                 "started": False
             }
@@ -100,7 +100,7 @@ class Tournament_controller:
                     "number_of_rounds": no_of_round,
                     "current_round": current_round,
                     "description": description,
-                    "status": False,
+                    "completed": False,
                     "players": [],
                     "started": False
                 }
@@ -187,7 +187,7 @@ class Tournament_controller:
             if tournament_id in list(tournament_data.keys()):
                 return tournament_data[tournament_id]
             else:
-                print("".center(60,"-"))
+                print("".center(60, "-"))
                 print("Tournament ID is incorrect, Please enter correct ID")
         else:
             print("".center(60, "-"))
@@ -247,7 +247,7 @@ class Tournament_controller:
             if player_id in list(player_data.keys()) and tournament_id in list(tournament_data.keys()):
 
                 # Checking if player is added to tournament or not
-                if not player_id in tournament_data[tournament_id]["players"]:
+                if player_id not in tournament_data[tournament_id]["players"]:
                     tournament_data[tournament_id]["players"].append(player_id)
 
                     # Saving Data into Tournament Model
@@ -255,8 +255,6 @@ class Tournament_controller:
                     print("Player Details Added Successfully.")
                 else:
                     print("Player is already Added to tournament")
-
-
             else:
                 print("Player ID is not valid or Tournament ID is not correct")
         else:
@@ -312,7 +310,8 @@ class Tournament_controller:
                 # Iterating through player_list list
                 for i in players_list:
                     # Saving data of each student id first_name last_name into player_list
-                    player_output_data.append(i + "  " + player_data[i]["first_name"] + " " + player_data[i]["last_name"])
+                    player_output_data.append(
+                        i + "  " + player_data[i]["first_name"] + " " + player_data[i]["last_name"])
             else:
                 print("Tournament ID is not correct")
         else:
@@ -362,7 +361,7 @@ class Tournament_controller:
                     print("Players are not added to tournament, Please add players before creating fixture.")
                     return
                 #  will get current round
-                if not tournament_data[tournament_id]["status"]:
+                if not tournament_data[tournament_id]["completed"]:
                     current_round = tournament_data[tournament_id]["current_round"]
                 else:
                     print("Tournament is already completed")
@@ -458,7 +457,7 @@ class Tournament_controller:
                     print("Fixture is already created for this round.")
                     return False
             else:
-                score_data[tournament_id] = {match_round:{}, "final":{}}
+                score_data[tournament_id] = {match_round: {}, "final": {}}
                 # iterating for player data to generate a new score model
                 for i in player_data:
                     # Saving data into match current round
@@ -624,8 +623,10 @@ class Tournament_controller:
 
             Example Usage:
             tournament_fixture("TN2")
-            # Output: [{'player1': 'AB0001', 'player2': 'AB0002', 'completed': False, 'winner': None, 'result': '', 'tournament_round': '3'},
-            #           {'player1': 'AB0003', 'player2': 'AB0004', 'completed': False, 'winner': None, 'result': '', 'tournament_round': '3'}]
+            # Output: [{'player1': 'AB0001', 'player2': 'AB0002', 'completed': False, 'winner': None, 'result': '',
+            'tournament_round': '3'},
+            #           {'player1': 'AB0003', 'player2': 'AB0004', 'completed': False, 'winner': None, 'result': '',
+            'tournament_round': '3'}]
 
             tournament_fixture("TN5")
             # Output: Tournament does not exist
@@ -652,7 +653,7 @@ class Tournament_controller:
                         return_data.append(tournament_data[tournament_id][i])
                 return return_data
             else:
-                print("Tournament dose not started.")
+                print("Tournament dose not started/created.")
         else:
             print("Tournament is not created yet.")
         return False
@@ -701,8 +702,12 @@ class Tournament_controller:
             if tournament_id in list(tournament_data.keys()):
                 # Get current tournament round
                 current_round = str(tournament_data[tournament_id]["current_round"])
+            else:
+                print("Tournament Data dose not exist.")
+                return
         else:
             print("Tournament Data dose not exist.")
+            return
 
         # Checking if match data exist or not
         if tournament_match_data:
@@ -730,7 +735,7 @@ class Tournament_controller:
                     self.match.save_data(tournament_match_data)
 
                     # method to call update score for current round
-                    self.update_score(tournament_id, current_round,
+                    self.update_score(tournament_id, int(current_round),
                                       tournament_match_data[tournament_id][current_round][match_id])
                     print("Match Data updated.")
                 else:
@@ -753,7 +758,8 @@ class Tournament_controller:
             Args:
                 tournament_id (str): The unique ID of the tournament for which scores are to be updated.
                 round_number (int): The current round of the tournament.
-                match_data (dict): A dictionary containing details of the match, including player IDs, winner, and result.
+                match_data (dict): A dictionary containing details of the match, including player IDs, winner, and
+                result.
 
             Returns:
                 None or False: None is returned if the player scores are successfully updated,
@@ -767,10 +773,12 @@ class Tournament_controller:
             available, an error message is printed, and False is returned.
 
             Example Usage:
-            update_score("TN2", 3, {'player1': 'AB12345', 'player2': 'AB12346', 'completed': True, 'winner': 'AB12345', 'result': 'P1 win the match'})
+            update_score("TN2", 3, {'player1': 'AB12345', 'player2': 'AB12346', 'completed': True, 'winner': 'AB12345',
+            'result': 'P1 win the match'})
             # Output: Player scores updated successfully.
 
-            update_score("TN5", 2, {'player1': 'AB12345', 'player2': 'AB12346', 'completed': True, 'winner': None, 'result': 'Draw'})
+            update_score("TN5", 2, {'player1': 'AB12345', 'player2': 'AB12346', 'completed': True, 'winner': None,
+            'result': 'Draw'})
             # Output: Score Data is not Available.
         """
 
@@ -848,8 +856,12 @@ class Tournament_controller:
             if tournament_id in list(tournament_data.keys()):
                 # Get current tournament round
                 current_round = str(tournament_data[tournament_id]["current_round"])
+            else:
+                print("Tournament Data dose not exist.")
+                return
         else:
             print("Tournament Data dose not exist.")
+            return
 
         # Check if score data exist or not
         if score_data:
@@ -862,34 +874,36 @@ class Tournament_controller:
 
                     # Iterating for each player of current round to get There first name and last name
                     for player_id in tournament_data[tournament_id]["players"]:
-
                         # Getting player full name by combining first name and last name
-                        player_name = player_data[player_id]["first_name"]+"  "+player_data[player_id]["last_name"]
+                        player_name = player_data[player_id]["first_name"] + "  " + player_data[player_id]["last_name"]
 
                         # Inserting player current round score into the value
-                        return_data[0]["current_score"][player_name] = score_data[tournament_id][current_round][player_id]
+                        return_data[0]["current_score"][player_name] = score_data[tournament_id][current_round][
+                            player_id]
 
                         # Inserting player final score into the value
                         return_data[1]["final_score"][player_name] = score_data[tournament_id]["final"][player_id]
                     return return_data
 
-                # If current round is completed the will show the last round score
-                elif int(current_round)>1 and str(int(current_round)-1) in list(score_data[tournament_id].keys()):
+                # If current round is completed then it will show the last round score
+                elif int(current_round) > 1 and str(int(current_round) - 1) in list(score_data[tournament_id].keys()):
 
+                    current_round = str(int(current_round) - 1)
                     # Iterating for each player of current round to get There first name and last name
                     for player_id in tournament_data[tournament_id]["players"]:
-
                         # Getting player full name by combining first name and last name
                         player_name = player_data[player_id]["first_name"] + "  " + player_data[player_id]["last_name"]
 
                         # Inserting player current round score into the value
-                        return_data[0]["current_score"][player_name] = score_data[tournament_id][current_round][player_id]
+                        return_data[0]["current_score"][player_name] = score_data[tournament_id][current_round][
+                            player_id]
 
                         # Inserting player final score into the value
-                        return_data[1]["final_score"][player_name] = score_data[tournament_id][current_round][player_id]
+                        return_data[1]["final_score"][player_name] = score_data[tournament_id][current_round][
+                            player_id]
                     return return_data
             else:
-                print("Tournament Dose not exist.")
+                print("Tournament Match Schedule is not created.")
         else:
             print("Score data is not exist")
         return False
@@ -914,7 +928,8 @@ class Tournament_controller:
             it counts the number of completed matches in the current round. If the count is equal to the total
             number of matches in the round, the current round is incremented. If the new round is the last round
             of the tournament, the tournament status is set to True. The updated tournament data is saved.
-            If the tournament ID is incorrect or data is not available, an error message is printed, and False is returned.
+            If the tournament ID is incorrect or data is not available, an error message is printed, and False is
+            returned.
 
             Example Usage:
             update_current_round("TN2")
@@ -935,9 +950,12 @@ class Tournament_controller:
             if tournament_id in list(tournament_data.keys()):
                 # Get current tournament round
                 current_round = str(tournament_data[tournament_id]["current_round"])
+            else:
+                print("Tournament Data dose not exist.")
+                return
         else:
             print("Tournament Data dose not exist.")
-
+            return
         # Checking if match data exist or not
         if tournament_match_data:
             count = 0
@@ -945,13 +963,13 @@ class Tournament_controller:
                 if i != "completed":
                     if tournament_match_data[tournament_id][current_round][i]["completed"]:
                         count += 1
-            if count >= len(tournament_match_data[tournament_id][current_round])-1:
+            if count >= len(tournament_match_data[tournament_id][current_round]) - 1:
                 if int(current_round) < int(tournament_data[tournament_id]["number_of_rounds"]):
 
                     tournament_match_data[tournament_id][current_round]["completed"] = True
                     tournament_data[tournament_id]["current_round"] += 1
                 elif int(current_round) == int(tournament_data[tournament_id]["number_of_rounds"]):
-                    tournament_data[tournament_id]["status"] = True
+                    tournament_data[tournament_id]["completed"] = True
 
             self.model.save_data(tournament_data)
             self.match.save_data(tournament_match_data)
@@ -970,8 +988,10 @@ class Tournament_controller:
                str or dict: A formatted string with tournament details or False if the tournament ID is incorrect.
 
            This method fetches data about tournaments from the Tournament Model, checks if the provided tournament ID
-           exists in the available data, and then returns a formatted string with the tournament name, start date, and end date.
-           If the tournament ID is incorrect or the data does not exist, it returns False and prints an appropriate message.
+           exists in the available data, and then returns a formatted string with the tournament name, start date, and
+           end date.
+           If the tournament ID is incorrect or the data does not exist, it returns False and prints an appropriate
+           message.
 
            Note:
            - The return type can be either a formatted string or the complete tournament data based on preference.

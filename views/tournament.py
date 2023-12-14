@@ -153,7 +153,7 @@ class Tournament:
                     # Getting tournament details based on ID
                     tournament_id = input("Enter the tournament ID : ")
                     if self.controller.tournament_details(tournament_id):
-                        self.display_tournament(self.controller.tournament_details(tournament_id))
+                        display_tournament(self.controller.tournament_details(tournament_id))
 
                 elif choice == "3":
 
@@ -180,7 +180,7 @@ class Tournament:
 
                     # Getting fixture details for a tournament
                     tournament_id = input("Enter tournament ID to get Fixture Details : ")
-                    self.display_result(self.controller.tournament_fixture(tournament_id))
+                    display_result(self.controller.tournament_fixture(tournament_id))
 
                 elif choice == "6":
 
@@ -193,10 +193,11 @@ class Tournament:
 
                     # Updating match result
                     tournament_id = input("Enter tournament ID to Update Match : ")
-                    self.display_result(self.controller.tournament_fixture(tournament_id))
-                    match_id = input("Enter the Match ID : ")
-                    winner = input("Enter the winner ID or Draw for Tie Match : ")
-                    self.controller.update_match(tournament_id, str(match_id), winner)
+                    if self.controller.tournament_fixture(tournament_id):
+                        display_result(self.controller.tournament_fixture(tournament_id))
+                        match_id = input("Enter the Match ID : ")
+                        winner = input("Enter the winner ID or Draw for Tie Match : ")
+                        self.controller.update_match(tournament_id, str(match_id), winner)
 
                 elif choice == "8":
 
@@ -204,7 +205,7 @@ class Tournament:
                     tournament_id = input("Enter tournament ID to Get Score : ")
 
                     if self.controller.get_tournament_score(tournament_id):
-                        self.display_score(self.controller.get_tournament_score(tournament_id))
+                        display_score(self.controller.get_tournament_score(tournament_id))
 
                 elif choice == "9":
 
@@ -221,109 +222,115 @@ class Tournament:
             if not return_choice():
                 return False
 
-    def display_score(self, data):
-        """
-            Display scores from the provided data.
 
-            Parameters:
-            - data (list): A list of dictionaries representing the scores for each round or category.
-                           Each dictionary should have a single key representing the round or category,
-                           and the corresponding value is another dictionary with player names and scores.
+def display_score(data):
+    """
+        Display scores from the provided data.
 
-            Returns:
-            None
-        """
+        Parameters:
+        - data (list): A list of dictionaries representing the scores for each round or category.
+                       Each dictionary should have a single key representing the round or category,
+                       and the corresponding value is another dictionary with player names and scores.
 
-        for score_row in data:
+        Returns:
+        None
+    """
 
-            # Print a horizontal line as a separator
+    for score_row in data:
+
+        # Print a horizontal line as a separator
+        print("".center(60, "-"))
+
+        # Extract the key (e.g., round number or category) for the current score row
+        display_key = list(score_row.keys())[0]
+
+        # Print the display key (e.g., round number or category)
+        print(display_key)
+
+        # Iterate through each player in the current score row and display their name and score
+        for name in score_row[display_key]:
+            print("{} ==> {}".format(name, score_row[display_key][name]))
+
+
+def display_result(data):
+    """
+        Display tournament results including match details and round information.
+
+        Args:
+            data (list): List of dictionaries containing match and round information.
+
+        This method takes a list of dictionaries as input, where each dictionary represents a tournament round with
+        match details. It iterates through the data, printing information about each round and its corresponding
+        matches,
+        including match ID, players, completion status, winner, and result.
+
+        Example:
+        result_data = [
+             {"tournament_round": 1, "completed": True, "1": {"player1": "John", "player2": "Jane", "completed":
+             True, "winner": "John", "result": "2-1"}},
+             {"tournament_round": 2, "completed": False, "2": {"player1": "Bob", "player2": "Alice", "completed":
+             False, "winner": None, "result": None}},
+             # ... additional rounds and matches
+        ]
+        display_result(result_data)
+        ------------------------------------------------------------
+        Tournament Current Round ==> 1
+        current round completed ==> True
+        ------------------------------
+        Match ID ==> 1
+        Player1 ==> John
+        Player2 ==> Jane
+        Completed ==> True
+        Winner ==> John
+        Result ==> 2-1
+        ------------------------------------------------------------
+        Tournament Current Round ==> 2
+        current round completed ==> False
+        ------------------------------
+        Match ID ==> 2
+        Player1 ==> Bob
+        Player2 ==> Alice
+        Completed ==> False
+        Winner ==> None
+        Result ==> None
+        ------------------------------------------------------------
+
+    """
+
+    # Iterate over each row in the data
+    if data:
+        for match_row in data:
+
+            # Print a separator line for better readability
             print("".center(60, "-"))
 
-            # Extract the key (e.g., round number or category) for the current score row
-            display_key = list(score_row.keys())[0]
+            # Display information about the tournament round
+            print("Tournament Current Round ==> {}".format(match_row["tournament_round"]))
+            print("current round completed ==> {}".format(match_row["completed"]))
 
-            # Print the display key (e.g., round number or category)
-            print(display_key)
+            # Iterate over each match in the current round
+            for match_number in list(match_row.keys()):
 
-            # Iterate through each player in the current score row and display their name and score
-            for name in score_row[display_key]:
-                print("{} ==> {}".format(name, score_row[display_key][name]))
+                # Check if the match_number is numeric (to filter out non-match keys)
+                if match_number.isnumeric():
+                    # Print a separator line for each match
+                    print("".center(30, "-"))
 
-    def display_result(self, data):
-        """
-            Display tournament results including match details and round information.
+                    # Display information about the match
+                    print("Match ID ==> {}".format(match_number))
+                    print("Player1 ==> {}".format(match_row[match_number]["player1"]))
+                    print("Player2 ==> {}".format(match_row[match_number]["player2"]))
+                    print("Completed ==> {}".format(match_row[match_number]["completed"]))
+                    print("Winner ==> {}".format(match_row[match_number]["winner"]))
+                    print("result ==> {}".format(match_row[match_number]["result"]))
+    else:
+        print("Tournament dose not Exist")
 
-            Args:
-                data (list): List of dictionaries containing match and round information.
 
-            This method takes a list of dictionaries as input, where each dictionary represents a tournament round with
-            match details. It iterates through the data, printing information about each round and its corresponding matches,
-            including match ID, players, completion status, winner, and result.
-
-            Example:
-            result_data = [
-                 {"tournament_round": 1, "completed": True, "1": {"player1": "John", "player2": "Jane", "completed": True, "winner": "John", "result": "2-1"}},
-                 {"tournament_round": 2, "completed": False, "2": {"player1": "Bob", "player2": "Alice", "completed": False, "winner": None, "result": None}},
-                 # ... additional rounds and matches
-            ]
-            display_result(result_data)
-            ------------------------------------------------------------
-            Tournament Current Round ==> 1
-            current round completed ==> True
-            ------------------------------
-            Match ID ==> 1
-            Player1 ==> John
-            Player2 ==> Jane
-            Completed ==> True
-            Winner ==> John
-            Result ==> 2-1
-            ------------------------------------------------------------
-            Tournament Current Round ==> 2
-            current round completed ==> False
-            ------------------------------
-            Match ID ==> 2
-            Player1 ==> Bob
-            Player2 ==> Alice
-            Completed ==> False
-            Winner ==> None
-            Result ==> None
-            ------------------------------------------------------------
-
-        """
-
-        # Iterate over each row in the data
-        if data:
-            for match_row in data:
-
-                # Print a separator line for better readability
-                print("".center(60, "-"))
-
-                # Display information about the tournament round
-                print("Tournament Current Round ==> {}".format(match_row["tournament_round"]))
-                print("current round completed ==> {}".format(match_row["completed"]))
-
-                # Iterate over each match in the current round
-                for match_number in list(match_row.keys()):
-
-                    # Check if the match_number is numeric (to filter out non-match keys)
-                    if match_number.isnumeric():
-                        # Print a separator line for each match
-                        print("".center(30, "-"))
-
-                        # Display information about the match
-                        print("Match ID ==> {}".format(match_number))
-                        print("Player1 ==> {}".format(match_row[match_number]["player1"]))
-                        print("Player2 ==> {}".format(match_row[match_number]["player2"]))
-                        print("Completed ==> {}".format(match_row[match_number]["completed"]))
-                        print("Winner ==> {}".format(match_row[match_number]["winner"]))
-                        print("result ==> {}".format(match_row[match_number]["result"]))
-        else:
-            print("Tournament dose not Exist")
-
-    def display_tournament(self, data):
-        """
-            Method to display Tournament display.
-        """
-        print("".center(60, "-"))
-        for key_name in data:
-            print("{} ==> {}".format(key_name, data[key_name]))
+def display_tournament(data):
+    """
+        Method to display Tournament display.
+    """
+    print("".center(60, "-"))
+    for key_name in data:
+        print("{} ==> {}".format(key_name, data[key_name]))

@@ -146,4 +146,3 @@ class Player:
         # Call the controller's method to get player details and print them
         print(self.controller.get_player_profile(player_id))
         return False
-

@@ -2,6 +2,7 @@
 import json
 import io
 
+
 class Tournament_Model:
     """
         Model to save Tournament data to json file and fetch bata from json
@@ -31,4 +32,3 @@ class Tournament_Model:
                 return data_loaded
         except (json.JSONDecodeError, FileNotFoundError):
             return None
-
