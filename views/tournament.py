@@ -303,3 +303,91 @@ class Tournament:
         print("".center(60, "-"))
         for key_name in data:
             print("{} ==> {}".format(key_name, data[key_name]))
+
+    def display_all_tournament(self, tournament_list):
+        """
+        Display details of all tournaments.
+
+        Parameters:
+        - tournament_list (list): A list containing tournament details.
+
+        Returns:
+        None
+        """
+        # Print a separator line
+        print("".center(60, "-"))
+
+        # Iterate through each tournament in the list and print its details
+        for tournament in tournament_list:
+            print(tournament)
+
+    def list_tournament_player(self, player_list):
+        """
+        Display a list of tournament players.
+
+        Parameters:
+        - player_list (list): A list containing player details.
+
+        Returns:
+        None
+        """
+
+        # Iterate through each player in the list and print their details
+        for player in player_list:
+            print(player)
+
+            # Print a separator line after each player's details
+            print("".center(60, "-"))
+
+    def display_tournament_details(self, tournament_details):
+        """
+        Display details of a tournament with Start date and End date.
+
+        Parameters:
+        - tournament_details (str): Details of the tournament to be displayed.
+
+        Returns:
+        None
+        """
+        # Print the tournament details with start date and end date
+        print(tournament_details)
+
+    def display_tournament_score(self, tournament_score):
+        """
+        Display the score of a tournament.
+
+        Parameters:
+        - tournament_score (tuple): A tuple containing tournament completion status and scores.
+          - tournament_score[0] (dict): Dictionary containing player scores.
+          - tournament_score[1] (bool): True if the tournament is completed, False if ongoing.
+
+        Returns:
+        None
+        """
+
+        # Check if the tournament is completed or ongoing and print the corresponding message
+        if tournament_score[1]:
+            print("Tournament is Completed.")
+        else:
+            print("Ongoing Tournament.")
+
+        # Display the scores using the provided display_score method
+        self.display_score(tournament_score[0])
+
+    def display_tournament_not_exist(self, data):
+        """
+        Response message indicating that the tournament does not exist or has not been created.
+
+        Parameters:
+        - data (int): An integer indicating the reason for non-existence or incorrect ID.
+          - 1: Tournament does not exist or has not been created.
+          - 2: Incorrect Tournament ID.
+
+        Returns:
+        None
+        """
+        # Check the value of 'data' and print the corresponding message
+        if data == 1:
+            print("Tournament dose not exist/created.")
+        elif data == 2:
+            print("Tournament ID is incorrect, Please enter correct ID")
