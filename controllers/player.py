@@ -20,19 +20,18 @@ class Player_controller:
 
         # List all players
         elif choice["choice"] == "2":
-            print("".center(40, "-"))
-
             # Retrieve the list of all players from the controller
             player_list = self.list_all_player()
 
             # If the player list is not empty, print each player's details
             if player_list:
-                for i in player_list:
-                    print(i)
+                self.player_view.view_all_player(player_list)
+            else:
+                self.player_view.view_all_player(False)
 
         # Display player profile
         elif choice["choice"] == "3":
-            print(self.get_player_profile(choice["player_id"]))
+            self.player_view.view_player(self.get_player_profile(choice["player_id"]))
 
         # Exit from player menu
         elif choice["choice"] == "0":

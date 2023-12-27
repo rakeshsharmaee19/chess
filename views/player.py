@@ -109,3 +109,46 @@ class Player:
             "player_dob": player_bob,
             "choice": "1"
         }
+
+    def view_all_player(self, player_list_data):
+        """
+        Display details of all players.
+
+        Parameters:
+        - player_list_data (list): A list containing player details.
+
+        Returns:
+        None
+        """
+
+        # Print a separator line
+        print("".center(40, "-"))
+
+        # If the player list is not empty, print each player's details
+        if player_list_data:
+            # Iterate through each player's details and print them
+            for i in player_list_data:
+                print(i)
+        else:
+            # Print a message if the player list is empty
+            print("Player List is empty.")
+
+    def view_player(self, data):
+        """
+        Display details of a player.
+
+        Parameters:
+        - data (dict): A dictionary containing player details with player IDs as keys.
+
+        Returns:
+        None
+        """
+
+        # Check if the player details dictionary is not empty
+        if data:
+            # Iterate through each player's details and print them
+            for i in data:
+                print("Player {} ==> {}".format(i, data[i]))
+        else:
+            # Print a message if the player does not exist
+            print("Player does not exist.")
