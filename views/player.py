@@ -1,5 +1,3 @@
-from controllers.player import Player_controller
-
 
 def validate_id(chess_id):
     """
@@ -44,7 +42,6 @@ class Player:
     """
         Class for player view
     """
-    controller = Player_controller()
 
     def player_menu(self):
         """
@@ -70,15 +67,20 @@ class Player:
                 if choice == "1":
                     return self.create_player()
                 elif choice == "2":
-                    return self.list_all_player()
+                    return {"choice": "2"}
                 elif choice == "3":
-                    return self.player_view()
+                    print("".center(40, "-"))
+
+                    # Prompt the user to enter the player ID
+                    player_id = input("Please Enter the player ID(ex:AB12345) : ")
+                    return {"choice": "3", "player_id": player_id}
                 else:
-                    return False
+                    return {"choice": "0"}
             else:
                 print("Invalid choice. Please try again.")
 
-    def create_player(self):
+    @staticmethod
+    def create_player():
         """
             Method to gather and store player information in a JSON file.
 
@@ -99,50 +101,11 @@ class Player:
         last_name = input("Enter player last name : ")
         player_bob = input("Enter player date of birth : ")
 
-        # calling save methode to save data into JSON
-        self.controller.save_player(chess_id, first_name, last_name, player_bob)
-
-    def list_all_player(self):
-        """
-            Method to retrieve and display a list of all players from the JSON file.
-
-            This method calls the controller's list_all_player method to retrieve a
-            list of all player data from the associated JSON file. If the player list
-            is not empty, it iterates through the list and prints each player's details.
-            Finally, the method returns False to indicate that the operation is complete.
-
-            :return: False
-        """
-
-        print("".center(40, "-"))
-
-        # Retrieve the list of all players from the controller
-        player_list = self.controller.list_all_player()
-
-        # If the player list is not empty, print each player's details
-        if player_list:
-            for i in player_list:
-                print(i)
-
-        return False
-
-    def player_view(self):
-        """
-            Method to view details of a specific player based on their ID.
-
-            This method prompts the user to input a player ID (e.g., AB12345) and
-            then calls the controller's get_player_profile method to retrieve and
-            print the details of the specified player. The method returns False
-            to indicate the completion of the operation.
-
-            :return: False
-        """
-
-        print("".center(40, "-"))
-
-        # Prompt the user to enter the player ID
-        player_id = input("Please Enter the player ID(ex:AB12345) : ")
-
-        # Call the controller's method to get player details and print them
-        print(self.controller.get_player_profile(player_id))
-        return False
+        # Return data in JSON format
+        return {
+            "chess_id": chess_id,
+            "first_name": first_name,
+            "last_name": last_name,
+            "player_dob": player_bob,
+            "choice": "1"
+        }

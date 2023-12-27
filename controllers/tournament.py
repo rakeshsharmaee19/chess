@@ -2,6 +2,7 @@ from models.match import Match_Model
 from models.player import Player_Model
 from models.score import Score_Model
 from models.tournament import Tournament_Model
+from views.tournament import Tournament
 
 
 class Tournament_controller:
@@ -12,6 +13,7 @@ class Tournament_controller:
     player_model = Player_Model()
     score = Score_Model()
     match = Match_Model()
+    tournament_view = Tournament()
 
     def __init__(self):
         self.id = None
@@ -19,6 +21,98 @@ class Tournament_controller:
         self.location = None
         self.date = None
         self.num_of_rounds = None
+
+    def tournament_options(self):
+        """
+        Main method for handling tournament options.
+
+        Based on user input, performs various actions related to tournament management.
+
+        Options:
+        1. Create a new tournament
+        2. List all tournaments
+        3. Display details of a specific tournament
+        4. Add a player to a tournament
+        5. List players of a specific tournament
+        6. Display tournament results
+        7. Create fixture for the current round
+        8. Update match result
+        9. Display tournament scores
+        10. Display tournament details including start and end dates
+        0. Exit the tournament options
+
+        Returns
+        -------
+        None
+        """
+        # Get user choice from the tournament menu
+        choice = self.tournament_view.tournament_menu()
+
+        # Create a new tournament
+        if choice["choice"] == "1":
+            self.save_tournament(choice["name"], choice["location"], choice["start_date"],
+                                 choice["end_date"], choice["description"], choice["no_of_rounds"])
+            print("Tournament Created Successfully.")
+
+        # List all tournaments
+        elif choice["choice"] == "2":
+            data = self.list_all_tournaments()
+            if data:
+                print("".center(60, "-"))
+                for i in data:
+                    print(i)
+
+        # Display tournament details
+        elif choice["choice"] == "3":
+
+            if self.tournament_details(choice["tournament_id"]):
+                self.tournament_view.display_tournament(self.tournament_details(choice["tournament_id"]))
+
+        # Add a player to a tournament
+        elif choice["choice"] == "4":
+            self.add_player(choice["tournament_id"], choice["player_id"])
+
+        # List all players in a tournament
+        elif choice["choice"] == "5":
+
+            for i in self.list_tournament_player(choice["tournament_id"]):
+                print(i)
+                print("".center(60, "-"))
+
+        # Display tournament results
+        elif choice["choice"] == "6":
+            self.tournament_view.display_result(self.tournament_fixture(choice["tournament_id"]))
+
+        # Create a fixture for the tournament
+        elif choice["choice"] == "7":
+            self.create_fixture(choice["tournament_id"])
+            print("Match schedule is created for current round")
+
+        # Update match result
+        elif choice["choice"] == "8":
+            if self.tournament_fixture(choice["tournament_id"]):
+                self.tournament_view.display_result(self.tournament_fixture(choice["tournament_id"]))
+                match_id = input("Enter the Match ID : ")
+                winner = input("Enter the winner ID or Draw for Tie Match : ")
+                self.update_match(choice["tournament_id"], str(match_id), winner)
+
+        # Display tournament status and scores
+        elif choice["choice"] == "9":
+            if self.get_tournament_score(choice["tournament_id"]):
+                if self.get_tournament_score(choice["tournament_id"])[1]:
+                    print("Tournament is Completed.")
+                else:
+                    print("Ongoing Tournament.")
+                self.tournament_view.display_score(self.get_tournament_score(choice["tournament_id"])[0])
+
+        # Display tournament details based on start date
+        elif choice["choice"] == "10":
+
+            print(self.tournament_details_date(choice["tournament_id"]))
+
+        # Exit the tournament options menu
+        elif choice["choice"] == "0":
+            return
 
     def save_tournament(self, name, location, start_date, end_date, description, no_of_round=4):
         """
@@ -690,7 +784,6 @@ class Tournament_controller:
             update_match("TN5", "3", "Draw")
             # Output: Please enter the correct Tournament ID and Match ID
         """
-
         # Calling match Model to get match data
         tournament_match_data = self.match.get_data()
 
