@@ -70,7 +70,7 @@ class Player_controller:
 
             # Checking User exist or Not
             if player_id in chess_key_list:
-                print("Player ID already exist, Please enter correct ID")
+                self.player_view.print_message("Player ID already exist, Please enter correct ID")
                 return False
 
             # Calling JSON Save method to save Player Data into model
@@ -78,13 +78,13 @@ class Player_controller:
 
             # Calling model module to save player data
             self.model.save_data(player_data)
-            print("Player Data added successfully")
+            self.player_view.print_message("Player Data added successfully")
         else:
             output_data = {player_id: data}
 
             # Calling model module to save player data into empty JSON file
             self.model.save_data(output_data)
-            print("Player Data added successfully")
+            self.player_view.print_message("Player Data added successfully")
         return False
 
     def list_all_player(self):
@@ -122,7 +122,7 @@ class Player_controller:
                 output_list.append(i[0]+"  "+i[1])
             return output_list
         else:
-            print("There in No player in Database")
+            self.player_view.print_message("There in No player in Database")
             return False
 
     def get_player_profile(self, player_id):
@@ -150,8 +150,8 @@ class Player_controller:
                 player_data[player_id]["id"] = player_id
                 return player_data[player_id]
             else:
-                print("Player ID is not valid.")
+                self.player_view.print_message("Player ID is not valid.")
                 return False
         else:
-            print("Player Dose nat exist")
+            self.player_view.print_message("Player Dose nat exist")
             return False

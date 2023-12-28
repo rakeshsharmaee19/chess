@@ -152,3 +152,15 @@ class Player:
         else:
             # Print a message if the player does not exist
             print("Player does not exist.")
+
+    def print_message(self, message):
+        """
+        Print the provided message.
+
+        Parameters:
+        - message (str): The message to be printed.
+
+        Returns:
+        None
+        """
+        print(message)

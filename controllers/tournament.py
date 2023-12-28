@@ -52,7 +52,7 @@ class Tournament_controller:
         if choice["choice"] == "1":
             self.save_tournament(choice["name"], choice["location"], choice["start_date"],
                                  choice["end_date"], choice["description"], choice["no_of_rounds"])
-            print("Tournament Created Successfully.")
+            self.tournament_view.print_message("Tournament Created Successfully.")
 
         # List all tournaments
         elif choice["choice"] == "2":
@@ -83,7 +83,7 @@ class Tournament_controller:
         # Create a fixture for the tournament
         elif choice["choice"] == "7":
             self.create_fixture(choice["tournament_id"])
-            print("Match schedule is created for current round")
+            self.tournament_view.print_message("Match schedule is created for current round")
 
         # Update match result
         elif choice["choice"] == "8":
@@ -274,10 +274,12 @@ class Tournament_controller:
             if tournament_id in list(tournament_data.keys()):
                 return tournament_data[tournament_id]
             else:
-                print("".center(60, "-"))
+                message_print = "".center(60, "-")
+                self.tournament_view.print_message(message_print)
                 self.tournament_view.display_tournament_not_exist(2)
         else:
-            print("".center(60, "-"))
+            message_print = "".center(60, "-")
+            self.tournament_view.print_message(message_print)
             self.tournament_view.display_tournament_not_exist(1)
         return False
 
@@ -317,10 +319,10 @@ class Tournament_controller:
             if tournament_id in list(tournament_data.keys()):
                 #  will get current round
                 if tournament_data[tournament_id]["completed"]:
-                    print("Tournament is already completed")
+                    self.tournament_view.print_message("Tournament is already completed")
                     return
                 elif tournament_data[tournament_id]["started"]:
-                    print("Tournament is already Started")
+                    self.tournament_view.print_message("Tournament is already Started")
                     return
             else:
                 self.tournament_view.display_tournament_not_exist(2)
@@ -339,13 +341,13 @@ class Tournament_controller:
 
                     # Saving Data into Tournament Model
                     self.model.save_data(tournament_data)
-                    print("Player Details Added Successfully.")
+                    self.tournament_view.print_message("Player Details Added Successfully.")
                 else:
-                    print("Player is already Added to tournament")
+                    self.tournament_view.print_message("Player is already Added to tournament")
             else:
-                print("Player ID is not valid or Tournament ID is not correct")
+                self.tournament_view.print_message("Player ID is not valid or Tournament ID is not correct")
         else:
-            print("Player Data dose not exist.")
+            self.tournament_view.print_message("Player Data dose not exist.")
         return False
 
     def list_tournament_player(self, tournament_id):
@@ -445,13 +447,14 @@ class Tournament_controller:
             if tournament_id in list(tournament_data.keys()):
 
                 if not tournament_data[tournament_id]["players"]:
-                    print("Players are not added to tournament, Please add players before creating fixture.")
+                    self.tournament_view.print_message("Players are not added to tournament, Please add players "
+                                                       "before creating fixture.")
                     return
                 #  will get current round
                 if not tournament_data[tournament_id]["completed"]:
                     current_round = tournament_data[tournament_id]["current_round"]
                 else:
-                    print("Tournament is already completed")
+                    self.tournament_view.print_message("Tournament is already completed")
                     return
             else:
                 self.tournament_view.display_tournament_not_exist(2)
@@ -541,7 +544,7 @@ class Tournament_controller:
                     # Saving Data into Score Model
                     self.score.save_data(score_data)
                 else:
-                    print("Fixture is already created for this round.")
+                    self.tournament_view.print_message("Fixture is already created for this round.")
                     return False
             else:
                 score_data[tournament_id] = {match_round: {}, "final": {}}
@@ -611,7 +614,7 @@ class Tournament_controller:
             # Checking if tournament_id and match_round exist or not
             if tournament_id in list(match_data.keys()):
                 if str(match_round) in list(match_data[tournament_id].keys()):
-                    print("Fixture is already Created")
+                    self.tournament_view.print_message("Fixture is already Created")
                 else:
                     # Define match id if not exist
                     match_id = 0
@@ -823,15 +826,15 @@ class Tournament_controller:
                     # method to call update score for current round
                     self.update_score(tournament_id, int(current_round),
                                       tournament_match_data[tournament_id][current_round][match_id])
-                    print("Match Data updated.")
+                    self.tournament_view.print_message("Match Data updated.")
                 else:
-                    print("Match Details already updated.")
+                    self.tournament_view.print_message("Match Details already updated.")
 
                 self.update_current_round(tournament_id)
             else:
-                print("Please enter the correct Tournament ID and Match ID.")
+                self.tournament_view.print_message("Please enter the correct Tournament ID and Match ID.")
         else:
-            print("Match is not created yet")
+            self.tournament_view.print_message("Match is not created yet.")
         return False
 
     def update_score(self, tournament_id, round_number, match_data):
@@ -887,7 +890,7 @@ class Tournament_controller:
                 score_data[tournament_id]["final"][match_data["player2"]] += 0.5
             self.score.save_data(score_data)
         else:
-            print("Score Data is not Available.")
+            self.tournament_view.print_message("Score Data is not Available.")
         return False
 
     def get_tournament_score(self, tournament_id):
@@ -989,9 +992,9 @@ class Tournament_controller:
                             player_id]
                     return [return_data, tournament_data[tournament_id]["completed"]]
             else:
-                print("Tournament Match Schedule is not created.")
+                self.tournament_view.print_message("Tournament Match Schedule is not created.")
         else:
-            print("Score data is not exist")
+            self.tournament_view.print_message("Score data is not exist.")
         return False
 
     def update_current_round(self, tournament_id):
@@ -1086,7 +1089,6 @@ class Tournament_controller:
            Example:
            tournament_id = "123"
            details = tournament_details_date(tournament_id)
-           print(details)
            "TournamentName from 2023-01-01 to 2023-12-31"
        """
 

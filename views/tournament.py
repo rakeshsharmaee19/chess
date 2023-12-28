@@ -391,3 +391,15 @@ class Tournament:
             print("Tournament dose not exist/created.")
         elif data == 2:
             print("Tournament ID is incorrect, Please enter correct ID")
+
+    def print_message(self, message):
+        """
+        Print the provided message.
+
+        Parameters:
+        - message (str): The message to be printed.
+
+        Returns:
+        None
+        """
+        print(message)
